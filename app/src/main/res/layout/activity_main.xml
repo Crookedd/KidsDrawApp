@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:screenOrientation="portrait">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/optionsHolder"
+        android:layout_marginBottom="-70dp"
+        android:alpha="0.4"
+        android:scaleType="centerCrop"
+        android:src="@drawable/flowers" />
+
+
+    <com.example.kidsdrawapp.DrawingView
+        android:id="@+id/drawing_view"
+        android:layout_width="match_parent"
+        android:layout_height="658dp"
+        app:backgroundColor="#ffffff"
+        app:enableSignature="true"
+        app:penColor="#FF4081"
+        app:penSize="3dp" />
+
+    <LinearLayout
+        android:id="@+id/optionsHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <SeekBar
+            android:id="@+id/penSize"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/TxtPenSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="size"
+            android:textColor="@android:color/black" />
+
+        <ImageButton
+            android:id="@+id/btnEraser"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="#00FFFFFF"
+            android:contentDescription="Очистить"
+            android:scaleType="fitCenter"
+            android:src="@drawable/eraser" />
+
+
+        <ImageButton
+            android:id="@+id/btnColor"
+            android:layout_width="20dp"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:contentDescription="Выбрать цвет"
+            android:scaleType="fitCenter"
+            android:src="@drawable/palette" />
+
+        <ImageButton
+            android:id="@+id/btnOptionsMenu"
+            android:layout_width="48dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="16dp"
+            android:background="#00FFFFFF"
+            android:contentDescription="Открыть меню"
+            android:scaleType="fitCenter"
+            android:src="@drawable/menu" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
