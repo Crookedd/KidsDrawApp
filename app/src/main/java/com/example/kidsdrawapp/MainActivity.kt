@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -89,28 +90,48 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun saveDrawingToStorage(bitmap: Bitmap, fileName: String) {
+        //уникальное имя
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        //атем мы создаем объект File, представляющий каталог, в который мы хотим сохранить изображение.
+        // Мы проверяем, существует ли этот каталог, и если нет, то создаем его.
         val uniqueFileName = "drawing_$timeStamp.png"
 
         val folder = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "YourFolderName")
         if (!folder.exists()) {
             folder.mkdirs()
         }
+        //Мы используем FileOutputStream для создания потока записи в этот файл,
+        // а затем используем метод compress объекта Bitmap, чтобы сохранить изображение в формате PNG с максимальным качеством (100).
+        // Затем мы сбрасываем и закрываем поток.Мы используем FileOutputStream для создания потока записи в этот файл,
+        // а затем используем метод compress объекта Bitmap,
+        // чтобы сохранить изображение в формате PNG с максимальным качеством (100). Затем мы сбрасываем и закрываем поток.
         val file = File(folder, uniqueFileName)
         try {
             val stream: OutputStream = FileOutputStream(file)
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
             stream.flush()
             stream.close()
+
+            // Теперь нужно обновить галерею, чтобы она увидела новое изображение
+            MediaScannerConnection.scanFile(
+                this,
+                arrayOf(file.absolutePath),
+                arrayOf("image/png"),
+                null
+            )
+
             Toast.makeText(this, "Рисунок сохранен", Toast.LENGTH_SHORT).show()
         } catch (e: IOException) {
             e.printStackTrace()
         }
     }
 
+
     private fun shareDrawing(bitmap: Bitmap) {
+        //Сначала мы создаем каталог для временного хранения изображения в кэше приложения.
         val cachePath = File(externalCacheDir, "images")
         cachePath.mkdirs()
+        //Затем мы создаем файл в этом каталоге и записываем в него изображение.
         val file = File(cachePath, "image.png")
         val fileOutputStream: FileOutputStream
         try {
@@ -122,8 +143,13 @@ class MainActivity : AppCompatActivity() {
             e.printStackTrace()
         }
 
-        val uri = FileProvider.getUriForFile(this, applicationContext.packageName + ".provider", file)
+        //После этого мы получаем URI для файла с помощью FileProvider,
+        // который позволяет нам создавать безопасные URI для файлов, чтобы передать их другим приложениям.
 
+        val uri = FileProvider.getUriForFile(this, applicationContext.packageName + ".provider", file)
+        //Здесь мы используем FileProvider для получения безопасного URI файла.
+        //Далее мы создаем интент для отправки изображения через действие Intent.ACTION_SEND.
+        //Мы указываем тип данных ("image/*") и добавляем URI изображения в интент как EXTRA_STREAM.
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "image/*"
         shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
@@ -134,6 +160,8 @@ class MainActivity : AppCompatActivity() {
         val initialColor = Color.BLACK
         val dialog = AmbilWarnaDialog(this, initialColor, object :
             AmbilWarnaDialog.OnAmbilWarnaListener {
+            //Мы определяем методы onCancel и onOk интерфейса OnAmbilWarnaListener,
+            // чтобы обработать события отмены выбора цвета и подтверждения выбранного цвета.
             override fun onCancel(dialog: AmbilWarnaDialog?) {
                 // Обработка отмены выбора цвета
             }

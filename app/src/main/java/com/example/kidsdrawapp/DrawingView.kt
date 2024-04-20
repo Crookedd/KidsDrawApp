@@ -10,10 +10,10 @@ import yuku.ambilwarna.AmbilWarnaDialog
 
 class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private var mDrawPaths: MutableList<CustomPath> = mutableListOf()  // список для хранения всех нарисованных путей
-    private var mCanvasBitmap: Bitmap? = null
+    private var mCanvasBitmap: Bitmap? = null //это переменная для хранения битмапа
     private var mDrawPaint: Paint = Paint()
-    private var mCanvasPaint: Paint = Paint()
-    private var mBrushSize: Float = 20f
+    private var mCanvasPaint: Paint = Paint()  //используется для настройки параметров рисования для холста.
+    private var mBrushSize: Float = 20f //это переменная для хранения размера кисти (brush size) для рисования.
     private var color: Int = Color.BLACK
     private var canvas: Canvas? = null
     private var btnEraser: ImageButton? = null
